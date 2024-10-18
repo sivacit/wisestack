@@ -17,7 +17,7 @@ on:
       - 'packages/sdk/**'
       - '.github/**'
       - 'scripts/**'
-
+  workflow_dispatch:
 jobs:
   build-push:
     runs-on: ubuntu-latest
