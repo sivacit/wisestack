@@ -29,6 +29,7 @@ services:
       - '42345:5432'
     volumes:
       - teable-db:/var/lib/postgresql/data:rw
+      - ./db-init:/docker-entrypoint-initdb.d:ro  # Add this line to mount your SQL script
       # you may use a bind-mounted host directory instead,
       # so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
