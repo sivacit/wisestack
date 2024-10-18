@@ -22,7 +22,7 @@ RUN pnpm fetch
 
 COPY --link . .
 
-RUN pnpm install --prefer-offline --frozen-lockfile
+RUN pnpm install --prefer-offline # --frozen-lockfile
 RUN pnpm -F @teable/db-main-prisma prisma-generate --schema ./prisma/postgres/schema.prisma
 
 ###################################################################
