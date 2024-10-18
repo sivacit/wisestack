@@ -54,7 +54,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            docker.io/sivacit/wisestack/${{ matrix.image }}
+            docker.io/sivacit/${{ matrix.image }}
           tags: |
             type=sha,format=long
             type=raw,value=latest
