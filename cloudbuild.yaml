@@ -34,6 +34,9 @@ steps:
 images:
   - '${_IMAGE_TAG}'
 
+options:
+  region: "us-central1"  # Specify a supported region
+
 substitutions:
   _CONTEXT: '.' # Default build context
   _DOCKERFILE: 'dockers/teable/Dockerfile' # Path to Dockerfile (can be customized)
