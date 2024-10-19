@@ -27,7 +27,7 @@ steps:
       - '${_CONTEXT}'
     env:
       # Cloud Build's environment variables for reference
-      - 'PROJECT_ID=$PROJECT_ID'
+      - 'PROJECT_ID=pmtool-438814'
       - 'COMMIT_SHA=$COMMIT_SHA'
       - 'BRANCH_NAME=$BRANCH_NAME'
 
@@ -37,7 +37,7 @@ images:
 substitutions:
   _CONTEXT: '.' # Default build context
   _DOCKERFILE: 'dockers/teable/Dockerfile' # Path to Dockerfile (can be customized)
-  _IMAGE_TAG: 'gcr.io/$PROJECT_ID/my-app:${COMMIT_SHA}' # Image tag
+  _IMAGE_TAG: 'gcr.io/pmtool-438814/my-app:${COMMIT_SHA}' # Image tag
   _PLATFORMS: 'linux/amd64,linux/arm64' # Platforms to build for
   _CACHE_FROM: '' # Optional external cache sources
   _CACHE_TO: '' # Optional cache export destinations
