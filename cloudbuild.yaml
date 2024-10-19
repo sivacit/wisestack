@@ -1,19 +1,15 @@
 steps:
   # Step 1: Set up QEMU for multi-platform builds
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'docker'
-    args: ['run', '--rm', '--privileged', 'multiarch/qemu-user-static', '--reset', '-p', 'yes']
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   entrypoint: 'docker'
+  #   args: ['run', '--rm', '--privileged', 'multiarch/qemu-user-static', '--reset', '-p', 'yes']
 
   # Step 2: Set up Docker Buildx for advanced builds
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'docker'
     args: ['buildx', 'create', '--use']
 
-  # Step 3: Fetch metadata and generate Docker tags (optional in Cloud Build)
-  # If you need to generate tags dynamically based on branches, commits, etc.,
-  # you may need a custom step here, using environment variables for metadata.
-
-  # Step 4: Build and push the Docker image
+  # Step 3: Build and push the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'buildx'
@@ -25,22 +21,23 @@ steps:
       - '--cache-to=${_CACHE_TO}'
       - '--tag=${_IMAGE_TAG}'
       - '${_CONTEXT}'
+
+    # Use substitutions for dynamic values such as image tags and context
     env:
-      # Cloud Build's environment variables for reference
-      - 'PROJECT_ID=pmtool-438814'
+      - 'PROJECT_ID=$PROJECT_ID'
       - 'COMMIT_SHA=$COMMIT_SHA'
       - 'BRANCH_NAME=$BRANCH_NAME'
 
 images:
   - '${_IMAGE_TAG}'
-  
+
 substitutions:
   _CONTEXT: '.' # Default build context
-  _DOCKERFILE: 'dockers/teable/Dockerfile' # Path to Dockerfile (can be customized)
+  _DOCKERFILE: 'dockers/teable/Dockerfile' # Path to Dockerfile
   _IMAGE_TAG: 'gcr.io/pmtool-438814/my-app:${COMMIT_SHA}' # Image tag
   _PLATFORMS: 'linux/amd64,linux/arm64' # Platforms to build for
-  _CACHE_FROM: '' # Optional external cache sources
-  _CACHE_TO: '' # Optional cache export destinations
+  _CACHE_FROM: '' # External cache sources (optional)
+  _CACHE_TO: ''   # Cache export destinations (optional)
 
-
+# Specify the logs bucket to avoid build failures related to logging
 logsBucket: "gs://pmtool-438814_cloudbuild"
