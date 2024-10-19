@@ -209,10 +209,10 @@ sqlite.integration.test:
 postgres.integration.test: docker.create.network
 	@TEST_PG_CONTAINER_NAME=teable-postgres-$(CI_JOB_ID); \
 	docker rm -fv $$TEST_PG_CONTAINER_NAME | true; \
-	$(DOCKER_COMPOSE_ARGS) $(DOCKER_COMPOSE) $(COMPOSE_FILE_ARGS) run -p 25432:5432 -d -T --no-deps --rm --name $$TEST_PG_CONTAINER_NAME teable-postgres; \
+	$(DOCKER_COMPOSE_ARGS) $(DOCKER_COMPOSE) $(COMPOSE_FILE_ARGS) run -p 42345:5432 -d -T --no-deps --rm --name $$TEST_PG_CONTAINER_NAME teable-postgres; \
 	chmod +x scripts/wait-for; \
-	scripts/wait-for 127.0.0.1:25432 --timeout=15 -- echo 'pg database started successfully' && \
-		export PRISMA_DATABASE_URL=postgresql://teable:teable@127.0.0.1:25432/e2e_test_teable?schema=public\&statement_cache_size=1 && \
+	scripts/wait-for 127.0.0.1:42345 --timeout=15 -- echo 'pg database started successfully' && \
+		export PRISMA_DATABASE_URL=postgresql://teable:teable@127.0.0.1:42345/e2e_test_teable?schema=public\&statement_cache_size=1 && \
 		make postgres.mode && \
 		pnpm -F "./packages/**" run build && \
 		pnpm g:test-e2e-cover && \
@@ -258,7 +258,7 @@ sqlite-db-migration:
 postgres-db-migration:
 	@_MIGRATION_NAME=$(if $(_MIGRATION_NAME),$(_MIGRATION_NAME),`read -p "Enter name of the migration (postgres): " migration_name; echo $$migration_name`); \
 	make gen-postgres-prisma-schema; \
-	PRISMA_DATABASE_URL=postgresql://teable:teable@127.0.0.1:5432/teable?schema=shadow \
+	PRISMA_DATABASE_URL=postgresql://teable:teable@127.0.0.1:42345/teable?schema=shadow \
 	pnpm -F @teable/db-main-prisma prisma-migrate dev --schema ./prisma/postgres/schema.prisma --name $$_MIGRATION_NAME
 
 db-migration:		## Reruns the existing migration history in the shadow database in order to detect schema drift (edited or deleted migration file, or a manual changes to the database schema)

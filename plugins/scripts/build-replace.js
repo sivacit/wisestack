@@ -11,7 +11,7 @@ let serverJs = fs.readFileSync(serverJsPath, 'utf8');
 serverJs = serverJs
     .replace(/process\.env\.PORT/g, 'process.env.PLUGIN_SERVER_PORT')
     .replace(/process\.env\.HOSTNAME/g, "'0.0.0.0'")
-    .replace(/3000/g, '3002');
+    .replace(/3000/g, '3000');
 
 // Write the modified content back to the server.js file
 fs.writeFileSync(serverJsPath, serverJs, 'utf8');
