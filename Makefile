@@ -310,5 +310,7 @@ switch-db-mode:		## Switch Database environment
     else \
       	echo "Unknown command.";  fi
 
+connect-db:
+	cloud-sql-proxy pmtool-438814:us-east1:wisestack 
 help:   ## show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
