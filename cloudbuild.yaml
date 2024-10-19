@@ -4,10 +4,10 @@ steps:
   #   entrypoint: 'docker'
   #   args: ['run', '--rm', '--privileged', 'multiarch/qemu-user-static', '--reset', '-p', 'yes']
 
-  # Step 2: Set up Docker Buildx for advanced builds
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'docker'
-    args: ['buildx', 'create', '--use']
+  # # Step 2: Set up Docker Buildx for advanced builds
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   entrypoint: 'docker'
+  #   args: ['buildx', 'create', '--use']
 
   # Step 3: Build and push the Docker image
   - name: 'gcr.io/cloud-builders/docker'
