@@ -45,7 +45,7 @@ UNAME_S := $(shell uname -s)
 # prisma database url defaults
 SQLITE_PRISMA_DATABASE_URL ?= file:../../db/main.db
 # set param statement_cache_size=1 to avoid query error `ERROR: cached plan must not change result type` after alter column type (modify field type)
-POSTGES_PRISMA_DATABASE_URL ?= postgresql://teable:teable\@127.0.0.1:5432/teable?schema=public\&statement_cache_size=1
+POSTGES_PRISMA_DATABASE_URL ?= postgresql://teable:teable\@127.0.0.1:42345/teable?schema=public\&statement_cache_size=1
 
 # If the first make argument is "start", "stop"...
 ifeq (docker.start,$(firstword $(MAKECMDGOALS)))
@@ -337,10 +337,6 @@ install-node:
 	@source ~/.bashrc
 	@echo "Installing Node.js using nvm..."
 	@bash -c "source $$HOME/.nvm/nvm.sh && nvm install 20.9.0"
-install-package:
-	@npm install -g pnpm
-	@corepack enable
-	@pnpm install
 # Install nvm and move it to /usr/local/bin
 install: install-nvm move-nvm install-node
 
