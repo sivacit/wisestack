@@ -310,6 +310,45 @@ switch-db-mode:		## Switch Database environment
     else \
       	echo "Unknown command.";  fi
 
+# Define the NVM version
+NVM_VERSION := v0.39.1
+NVM_INSTALL_SCRIPT := https://raw.githubusercontent.com/nvm-sh/nvm/$(NVM_VERSION)/install.sh
+
+# Target to install nvm
+install-nvm:
+	@echo "Installing NVM..."
+	curl -o- $(NVM_INSTALL_SCRIPT) | bash
+
+# Target to move nvm to /usr/local/bin (creates a wrapper script)
+move-nvm:
+	@echo "Creating nvm wrapper in /usr/local/bin..."
+	@sudo bash -c 'echo "#!/bin/bash\nexport NVM_DIR=\"$$HOME/.nvm\"\n[ -s \"$$NVM_DIR/nvm.sh\" ] && \. \"$$NVM_DIR/nvm.sh\"\nnvm \"$$@\"" > /usr/local/bin/nvm'
+	@sudo chmod +x /usr/local/bin/nvm
+	@echo "nvm is now accessible globally via /usr/local/bin/nvm"
+
+# Target to check the nvm installation
+check-nvm:
+	@which nvm || echo "nvm not found. Please ensure it's installed correctly."
+	@nvm --version || echo "Unable to determine nvm version."
+
+
+# Example target that uses nvm to install a specific Node.js version
+install-node:
+	@source ~/.bashrc
+	@echo "Installing Node.js using nvm..."
+	@bash -c "source $$HOME/.nvm/nvm.sh && nvm install 20.9.0"
+install-package:
+	@npm install -g pnpm
+	@corepack enable
+	@pnpm install
+# Install nvm and move it to /usr/local/bin
+install: install-nvm move-nvm install-node
+
+# Clean target
+clean:
+	@echo "Cleaning up..."
+	@rm -rf $(NVM_DIR)
+
 connect-db:
 	cloud-sql-proxy pmtool-438814:us-east1:wisestack 
 help:   ## show this help
